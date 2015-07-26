@@ -1,0 +1,122 @@
+<html>
+
+<head>
+	
+	<link type="text/css" rel="stylesheet" href="./stylesheets/login.css">
+	
+	
+	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css">
+
+
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+	
+	<!-- 	
+	<link type="text/css" rel="stylesheet" href="../ajax_googleapis/jqueryui1.8.18.css">
+
+
+
+	<script type="text/javascript" src="../ajax_googleapis/jquery1.7.0.min.js"></script>
+	<script type="text/javascript" src="../ajax_googleapis/jqueryui1.8.9.min.js"></script>
+	-->
+	
+	<script type="text/javascript" src="./javascripts/login.js"></script> 
+	<script type="text/javascript" src="./node_modules/js-cookie/js.cookie.js"></script> 
+	
+</head>
+
+
+<body>
+	
+	
+	
+	<section class="loginform cf">  
+	<form name="login" action="index_submit" method="get" accept-charset="utf-8">  
+	    <ul>  
+	        <li><label for="useracc" style="color:black;font-size:20px">Account</label>  
+	        <input type="text" name="useracc" placeholder="your acc" id="useracc_input" required></li>  
+	        <li><label for="password" style="color:black;font-size:20px">Password</label>  
+	        <input type="password" name="password" placeholder="password" id="password_input" required></li>  
+	        
+			<!--
+			<li><input id="submit_button" type="submit" value="Login"></li>
+			 -->
+			<li><div id="submit_button"><p>Login</p></div></li>
+			
+			
+			<script>
+				$("#submit_button").click(function(){
+					/*
+					var useracc = $("#useracc_input").val();
+					var pw = $("#password_input").val();
+					alert("Logged In!\n" + useracc + "\n" + pw);
+					*/
+					
+					
+					var accName = $("#useracc_input").val();
+					var accPw = $("#password_input").val();
+					var acc = "acc:::" + $("#useracc_input").val() + ";;;pw:::" + $("#password_input").val();
+			
+					console.log(acc);
+			
+					var url = window.location.toString().match(/http:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]{1,5}/)[0] + "/login_check";
+					var ajaxMsg = {accInfo: acc};
+					$.ajax({ url: url, type: "GET", data: ajaxMsg, dataType: "json",
+				
+				
+						success: function(data){  
+							var json = data;
+					
+							if(typeof json === "string") json = JSON.parse(json);
+					
+							if(json["status"] === "success"){
+								//alert("successfully created a new acc");
+								//window.location.replace("login.html");
+								
+								$.cookie("accInfo", $.param({"acc": accName, "pw": accPw, "points": json["points"]}));   //
+								
+								//var cookie = $.cookie(accName);
+								//for(key in cookie) console.log(cookie[key]);
+								//console.log(cookie);
+								window.location.replace("user_homepage.html");
+								
+								
+							}else{
+								//var errorMsg = json["msg"];
+								alert(json["msg"]);
+								
+								if(json["msg"] === "Account doesn't exist"){
+									$("#useracc_input").val("");
+									$("#password_input").val("");
+								}
+						
+							}
+						}
+				
+					});
+				
+				});
+			</script>
+			
+			
+	    </ul>  
+	</form>  
+	</section>
+	
+	
+	
+	
+	
+	<br><br><br><br><br><br><br><br><br><br>
+	
+	<div id="create_new_acc_link"><p style="font-size:40px"><a href="./create_new_acc.html">Create new account</a></p></div>
+	
+	
+	
+	
+</body>
+
+
+
+</html>
