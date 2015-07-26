@@ -1,0 +1,118 @@
+<html>
+
+<head>
+	
+	<link type="text/css" rel="stylesheet" href="../stylesheets/login.css">
+	
+	
+	
+	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.18/themes/base/jquery-ui.css">
+
+
+
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.9/jquery-ui.min.js"></script>
+	
+	
+</head>
+
+
+<body>
+	
+	
+	<section class="loginform cf">  
+	<form name="login" action="index_submit" method="get" accept-charset="utf-8">  
+		<!-- 
+	    <ul>  
+	        <li><label for="useracc">Account</label>  
+	        <input type="text" name="useracc" placeholder="your acc" required></li>  
+	        <li><label for="password">Password</label>  
+	        <input type="password" name="password" placeholder="password" required></li>  
+	        
+			<li><input id="submit_button" type="submit" value="Login"></li>
+			
+			
+			
+	    </ul>
+			-->
+			
+        <label for="useracc">Account</label>  
+        <input type="text" name="useracc" placeholder="your acc" id="acc_name" required> 
+        
+		<br><br>
+		
+		<label for="password">Password</label>  
+        <input type="password" name="password" placeholder="password" id="password" required>
+		
+		<br><br><br>
+		<label for="user_name">Name</label>
+		<input type="text" name="user_name" placeholder="your name" id="user_name" required> 
+		
+		<br><br><br><br><br><br>
+		
+		<div id="create_new_acc_button"><p>Create</p></div>
+			
+			  
+	</form>  
+	</section>
+	
+	
+	<script>
+	
+		$("#create_new_acc_button").click(function(){
+			//alert("button clicked");
+			//window.location.replace("login.html");
+			
+			
+			/*
+			
+			//ajax call
+			
+			// result: 
+			
+			if alrdy has such acc name
+				alert(alrdy has this acc)
+			else
+				create new acc into allUser.db
+				alert(successfully created a new acc)
+				redirect to login.html
+			
+			*/
+			
+			var acc = "acc:::" + $("#acc_name").val() + ";;;pw:::" + $("#password").val() + ";;;name:::" + $("#user_name").val();
+			
+			console.log(acc);
+			
+			var url = window.location.toString().match(/http:\/\/[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}:[0-9]{1,5}/)[0] + "/create_new_acc";
+			var ajaxMsg = {accInfo: acc};
+			$.ajax({ url: url, type: "GET", data: ajaxMsg, dataType: "json",
+				
+				
+				success: function(data){ 
+					//processJSONResponse(data); 
+					var json = data;
+					
+					if(typeof json === "string") json = JSON.parse(json);
+					
+					if(json["status"] === "success"){
+						alert("successfully created a new acc");
+						window.location.replace("login.html");
+					}else{
+						alert("Account name already exists, please choose a new one");
+						$("#acc_name").val("");
+						$("#password").val("");
+						
+					}
+				}
+				
+			});
+		});
+		
+	</script>
+	
+	
+</body>
+
+
+
+</html>
